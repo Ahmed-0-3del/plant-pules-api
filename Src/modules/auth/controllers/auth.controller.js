@@ -1,6 +1,8 @@
 import { UserModel } from "../../../../DB/models/User.js";
 import { handleError } from "../../../middleware/handelErorr.js";
 import { AppError } from "../../../utils/AppErorr.js";
+import dotenv from "dotenv";
+dotenv.config();
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 
@@ -27,6 +29,7 @@ export const signup = handleError(
 )
 
 
+
 // signin
 export const signin = handleError(
 
@@ -35,7 +38,7 @@ export const signin = handleError(
           const { email, password } = req.body;
          
           //  نبحث عن اليوزر
-          let user = await UserModel.findOne({ email })
+          let user = await UserModel.findOne({ email }).select("+password");
           if (!user) return next(new AppError("Email not found", 401));
 
           // نتحقق من الباسورد
@@ -45,21 +48,61 @@ export const signin = handleError(
          
         // create token
         const token = jwt.sign(
-            { name: user.name, userId: user._id},"Ahmed1372004"
+            { 
+                userId: user._id,
+                role: user.role 
+            },process.env.JWT_SECRET
         )
 
         res.status(200).json({
             message: "Login successful",
             token,
-            // user: {
-            //         id: user._id,
-            //         name: user.name,
-            //         email: user.email,
-            //     }
          });
     }
 )
 
 
 
+
+
+// 1-check we have token or not
+// 2-verfy token 
+// 3-if user of this token exist or not 
+// 4-check if this token is the last one or not (change password)
+// 5. Pass user to next middleware
+
+export const protectRoutes = handleError(
+
+    async(req,res,next)=>{
+
+        // 1
+        let {token} = req.headers 
+         if(!token) return next(new AppError("Please Provide Token",401))
+
+       // 2
+       let decoded = await jwt.verify(token,process.env.JWT_SECRET)
+
+       // 3 
+       const user = await UserModel.findById(decoded.userId)
+       if (!user) {
+              return res.status(404).json({ message: "User not found" });
+            }
+        
+       // 4 
+       if (user.changePasswordAt) {
+                const changePasswordTime = parseInt(
+                user.changePasswordAt.getTime() / 1000
+            );
+
+         if (changePasswordTime > decoded.iat) {
+             return res.status(401).json({ message: "Token expired, please login again" });
+            }
+         }
+
+     // 5
+      req.user = user
+      next();
+
+    }  
+)
 

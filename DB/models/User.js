@@ -16,28 +16,57 @@ const UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        required: function(){
+          return this.provider === "local";
+        },
+        select: false,
     },
+    confirmPassword:{
+      type:String,
+    },
+
+  provider: {
+      type: String,
+      enum: ["local", "google"],
+      default: "local",
+    },
+
+    googleId: String,
+
+
     changePasswordAt: Date,
     isVerified: {
          type: Boolean,
         default: false
      },
-    resetToken: { type: String },
-    resetTokenExpiry: { type: Date },
+    resetCode: {
+        type: String
+    },
+    resetCodeExpire: {
+    type: Date
+    },
+    passwordResetVerified:{
+    type:Boolean,
+    default:false
+  },
 
+  role: {
+  type: String,
+  enum: ["user", "admin"],
+  default: "user"
+},
+  
 
 
 },{ timestamps: true })
 
 
 UserSchema.pre("save", function () {
-  if (this.isModified("password") || this.isNew) {
-    // تأكد من أن كلمة المرور موجودة قبل التشفير
-    if (!this.password) throw new Error("Password is required");
-    this.password = bcrypt.hashSync(this.password, 10); // 10 هو عدد الـ salt rounds
+  if ((this.isModified("password") || this.isNew) && this.password) {
+    this.password = bcrypt.hashSync(this.password, 10);
   }
 });
+
 
 export const UserModel = mongoose.model("User", UserSchema);
 

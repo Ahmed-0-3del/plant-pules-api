@@ -12,11 +12,21 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.15.0",
     "bcrypt": "^6.0.0",
+    "cloudinary": "^2.9.0",
+    "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.3.2",
+    "joi": "^18.1.2",
     "jsonwebtoken": "^9.0.3",
     "mongodb": "^7.1.0",
     "mongoose": "^9.2.3",
-    "nodemon": "^3.1.14"
+    "multer": "^2.1.1",
+    "nodemailer": "^8.0.5",
+    "nodemon": "^3.1.14",
+    "passport": "^0.7.0",
+    "passport-facebook": "^3.0.0",
+    "passport-google-oauth20": "^2.0.0"
   }
 }

@@ -1,0 +1,43 @@
+
+import mongoose from "mongoose";
+
+const PredictionSchema = new mongoose.Schema({
+
+    userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true
+    },
+
+  imageUrl: [String],
+
+  finalDecision: {
+    type: String,
+    enum: ["healthy", "diseased"]
+  },
+
+  averageConfidence: Number,
+
+  total_images:Number,
+
+ results: [
+    {
+      image_index: Number,
+      prediction: String,
+      confidence: Number,
+      healthy_prob:Number,
+      diseases_prob:Number,
+      status: String
+    }
+  ],
+
+  
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+
+});
+
+export const PredictionModel = mongoose.model("Prediction", PredictionSchema);
+
