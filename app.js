@@ -20,6 +20,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(globalLimiter)
 
+app.use(async (req, res, next) => {
+  await connDB();
+  next();
+});
 
 app.use(passport.initialize());
 app.use("/api/v1/auth",authRoutes)
@@ -31,7 +35,6 @@ app.use("/api/v1/password",changePassword)
 app.use("/api/v1/contact",contactRoutes)
 
 
-connDB();
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
