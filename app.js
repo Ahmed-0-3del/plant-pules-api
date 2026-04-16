@@ -31,20 +31,16 @@ app.use("/api/v1/password",changePassword)
 app.use("/api/v1/contact",contactRoutes)
 
 
-if (process.env.NODE_ENV !== "production") {
-    connDB();
-}
-
+connDB();
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-// app.listen(port, () => {
-//     console.log(`Server running on port port ${port}`);
-// });
+app.listen(port, () => {
+    console.log(`Server running on port port ${port}`);
+});
 
 app.use(globalError);
 
 
-export default app;
