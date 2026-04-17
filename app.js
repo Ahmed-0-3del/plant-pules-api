@@ -17,7 +17,7 @@ import contactRoutes from "./Src/modules/contact/routes/contact.routes.js";
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
 app.use(globalLimiter)
 
 app.use(async (req, res, next) => {
