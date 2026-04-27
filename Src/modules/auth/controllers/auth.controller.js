@@ -11,20 +11,42 @@ import jwt from 'jsonwebtoken'
 export const signup = handleError(
 
     async(req,res,next)=>{
-        const{name,email,password} = req.body
+        const{name,email,password,gender} = req.body
 
         // check Email 
         let isFound = await UserModel.findOne({email})
         if(isFound) return next(new AppError("Email already Exist",409))
 
+
+        let imageUrl = "";
+
+         // لو المستخدم رفع صورة
+         if (req.file) {
+
+            const result = await cloudinary.uploader.upload(
+                req.file.path,
+                {
+                folder: "profiles"
+                }
+            );
+
+            imageUrl = result.secure_url;
+         }    
+
         // add user 
         const adduser = await UserModel.create({
                 name,
                 email,
-                password
+                password,
+                gender,
+                profileImage: imageUrl
             });
 
-        res.status(200).json({message:"Done",adduser})
+            res.status(201).json({
+                  status: "success",
+                  message: "Account created successfully"
+            });
+
     }
 )
 

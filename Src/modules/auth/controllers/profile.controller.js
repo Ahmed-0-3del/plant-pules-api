@@ -1,4 +1,5 @@
 import { UserModel } from "../../../../DB/models/User.js";
+import cloudinary from "../../../config/cloudinary.js";
 import { handleError } from "../../../middleware/handelErorr.js";
 import { AppError } from "../../../utils/AppErorr.js";
 
@@ -21,30 +22,97 @@ export const getProfile = handleError(
 );
 
 
-//  Update Profile
+
+
 export const updateProfile = handleError(
   async (req, res, next) => {
 
-    const { name, email } = req.body;
+    const { name, email, gender } = req.body;
 
-    const existingUser = await UserModel.findOne({ email });
+    let updateData = {};
 
-        if (existingUser && existingUser._id.toString() !== req.user._id.toString()) {
-          return next(new AppError("Email already in use", 409));
+    // Check Email Exists
+    if (email) {
+
+      const existingUser = await UserModel.findOne({ email });
+
+      if (
+        existingUser &&
+        existingUser._id.toString() !== req.user._id.toString()
+      ) {
+        return next(
+          new AppError("Email already in use", 409)
+        );
+      }
+
+      updateData.email = email;
+    }
+
+    if (name) updateData.name = name;
+
+    if (gender) updateData.gender = gender;
+ 
+  // Image
+   if (req.file) {
+
+      const result = await cloudinary.uploader.upload(
+        req.file.path,
+        {
+          folder: "profiles"
         }
+      );
 
+      updateData.profileImage = result.secure_url;
+    }
+
+    // Update
     const user = await UserModel.findByIdAndUpdate(
       req.user._id,
-      { name, email },
-      { new: true, runValidators: true }
+      updateData,
+      {
+        new: true,
+        runValidators: true
+      }
     ).select("-password");
 
     res.status(200).json({
       status: "success",
       message: "Profile updated successfully",
-      data: user,
+      data: user
     });
+
+    
+
   }
 );
+
+
+
+
+//  Update Profile
+// export const updateProfile = handleError(
+//   async (req, res, next) => {
+
+//     const { name, email } = req.body;
+
+//     const existingUser = await UserModel.findOne({ email });
+
+//         if (existingUser && existingUser._id.toString() !== req.user._id.toString()) {
+//           return next(new AppError("Email already in use", 409));
+//         }
+
+//     const user = await UserModel.findByIdAndUpdate(
+//       req.user._id,
+//       { name, email },
+//       { new: true, runValidators: true }
+//     ).select("-password");
+
+//     res.status(200).json({
+//       status: "success",
+//       message: "Profile updated successfully",
+//       data: user,
+//     });
+//   }
+// );
 
 
