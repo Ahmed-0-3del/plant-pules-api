@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import cloudinary from "../../../config/cloudinary.js";
 
 
 // signup
@@ -44,7 +45,8 @@ export const signup = handleError(
 
             res.status(201).json({
                   status: "success",
-                  message: "Account created successfully"
+                  message: "Account created successfully",
+                  adduser
             });
 
     }

@@ -25,8 +25,9 @@ const PredictionSchema = new mongoose.Schema({
       image_index: Number,
       prediction: String,
       confidence: Number,
-      healthy_prob:Number,
-      diseases_prob:Number,
+      disease_name:String,
+      description:String,
+      treatment:String,
       status: String
     }
   ],

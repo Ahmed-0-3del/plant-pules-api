@@ -1,3 +1,4 @@
+import { PredictionModel } from "../../../../DB/models/Prediction.js";
 import { UserModel } from "../../../../DB/models/User.js";
 import cloudinary from "../../../config/cloudinary.js";
 import { handleError } from "../../../middleware/handelErorr.js";
@@ -87,6 +88,46 @@ export const updateProfile = handleError(
 );
 
 
+
+
+// delete
+export const deleteAccount = handleError(
+  async (req, res, next) => {
+
+    const user = req.user;
+
+    if (!user) {
+      return next(new AppError("User not found", 404));
+    }
+
+    
+    // حذف صورة البروفايل من Cloudinary
+    if (user.profileImage) {
+
+      const publicId = user.profileImage
+        .split("/")
+        .slice(-2)
+        .join("/")
+        .split(".")[0];
+
+      await cloudinary.uploader.destroy(publicId);
+    }
+
+    //  حذف كل الـ scans الخاصة بالمستخدم
+    await PredictionModel.deleteMany({
+      userId: user._id
+    });
+
+    //  حذف المستخدم
+    
+    await user.deleteOne();
+
+    res.status(200).json({
+      status: "success",
+      message: "Account deleted successfully"
+    });
+  }
+);
 
 
 //  Update Profile
