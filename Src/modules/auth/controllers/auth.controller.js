@@ -46,7 +46,7 @@ export const signup = handleError(
             res.status(201).json({
                   status: "success",
                   message: "Account created successfully",
-                  adduser
+                  
             });
 
     }
