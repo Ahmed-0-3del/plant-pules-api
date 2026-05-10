@@ -27,7 +27,7 @@ const PredictionSchema = new mongoose.Schema({
       confidence: Number,
       disease_name:String,
       description:String,
-      treatment:String,
+      treatment:[String],
       status: String
     }
   ],
