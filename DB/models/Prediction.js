@@ -13,7 +13,7 @@ const PredictionSchema = new mongoose.Schema({
 
   finalDecision: {
     type: String,
-    enum: ["healthy", "diseases"]
+    enum: ["healthy", "disease","not_lettuce"]
   },
 
   averageConfidence: Number,
@@ -28,7 +28,9 @@ const PredictionSchema = new mongoose.Schema({
       disease_name:String,
       description:String,
       treatment:[String],
-      status: String
+      status: String,
+      message: String
+
     }
   ],
 
