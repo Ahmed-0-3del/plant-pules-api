@@ -10,7 +10,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:3000/api/v1/auth/google/callback",
+      callbackURL: "https://plant-pules-api.vercel.app/api/v1/auth/google/callback",
     },
 
     async (accessToken, refreshToken, profile, done) => {
@@ -23,9 +23,11 @@ passport.use(
         if (!user) {
           user = await UserModel.create({
             name: profile.displayName,
-            email,
-            provider: "google",
-          });
+             email,
+             provider: "google",
+             googleId: profile.id,
+             profileImage: profile.photos[0].value,
+              });
         }
 
         // لو موجود → login عادي

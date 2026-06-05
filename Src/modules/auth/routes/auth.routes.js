@@ -1,5 +1,5 @@
 import express from 'express'
-import { signin, signup } from '../controllers/auth.controller.js';
+import { googleLogin, signin, signup } from '../controllers/auth.controller.js';
 import passport from "passport";
 import jwt from "jsonwebtoken";
 import { validate } from '../../../middleware/validation.js';
@@ -13,6 +13,7 @@ const authRoutes = express.Router();
 authRoutes.route("/signup").post(upload.single("image"),validate({ body: signupSchema,file: imageSchema}),signup)
 authRoutes.route("/signin").post(validate(signinSchema),authLimiter,signin)
 authRoutes.get("/google",passport.authenticate("google", {scope: ["profile", "email"],}));
+authRoutes.post("/google", googleLogin);
 
 authRoutes.get(
   "/google/callback",
@@ -20,7 +21,10 @@ authRoutes.get(
   (req, res) => {
 
     const token = jwt.sign(
-      { userId: req.user._id },
+      {
+         userId: req.user._id ,
+         role: req.user.role,
+        },
       process.env.JWT_SECRET
     );
 
