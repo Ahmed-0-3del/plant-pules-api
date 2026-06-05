@@ -88,54 +88,6 @@ export const signin = handleError(
 
 
 
-// register with google for flutter
-export const googleLogin = handleError(
-  async (req, res, next) => {
-
-    const {
-      name,
-      email,
-      googleId,
-      profileImage
-    } = req.body;
-
-    let user = await UserModel.findOne({ email });
-
-    // register
-    if (!user) {
-
-      user = await UserModel.create({
-        name,
-        email,
-        googleId,
-        profileImage,
-        provider: "google",
-      });
-    }
-
-    // token
-    const token = jwt.sign(
-      {
-        userId: user._id,
-        role: user.role,
-      },
-      process.env.JWT_SECRET
-    );
-
-    res.status(200).json({
-      status: "success",
-      message: "Google login successful",
-      token,
-    });
-  }
-);
-
-
-
-
-
-
-
 
 
 // 1-check we have token or not
