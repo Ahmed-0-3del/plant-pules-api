@@ -26,7 +26,10 @@ authRoutes.get(
          userId: req.user._id ,
          role: req.user.role,
         },
-      process.env.JWT_SECRET
+      process.env.JWT_SECRET,
+          {
+            expiresIn: "30m"
+          }
     );
 
     res.json({

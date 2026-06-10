@@ -1,7 +1,7 @@
 
 import express from "express";
 import { protectRoutes } from "../controllers/auth.controller.js";
-import { deleteAccount, getProfile, updateProfile } from "../controllers/profile.controller.js";
+import { deleteAccount, getProfile, updateEmail, updateName, updateProfileImage } from "../controllers/profile.controller.js";
 import upload from "../../../middleware/upload.js";
 
 const userRoutes = express.Router();
@@ -10,8 +10,15 @@ const userRoutes = express.Router();
 userRoutes.get("/profile", protectRoutes, getProfile);
 
 
-//  update
-userRoutes.put("/profile",protectRoutes,upload.single("image"),updateProfile);
+//  update Name 
+userRoutes.put("/profile/name",protectRoutes,updateName);
+
+//  update Email
+userRoutes.put("/profile/email",protectRoutes,updateEmail);
+
+//  update profile image 
+userRoutes.put("/profile/image",protectRoutes,upload.single("image"),updateProfileImage);
+
 
 //delete
 userRoutes.delete("/profile",protectRoutes,deleteAccount);

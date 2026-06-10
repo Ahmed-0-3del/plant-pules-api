@@ -75,7 +75,11 @@ export const signin = handleError(
             { 
                 userId: user._id,
                 role: user.role 
-            },process.env.JWT_SECRET
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "30m"
+            }
         )
 
         res.status(200).json({
@@ -105,7 +109,25 @@ export const protectRoutes = handleError(
          if(!token) return next(new AppError("Please Provide Token",401))
 
        // 2
-       let decoded = await jwt.verify(token,process.env.JWT_SECRET)
+       let decoded;
+
+        try {
+
+        decoded = jwt.verify(
+            token,
+            process.env.JWT_SECRET
+        );
+
+        } catch (error) {
+
+        return next(
+            new AppError(
+            "Session expired, please login again",
+            401
+            )
+        );
+
+        }
 
        // 3 
        const user = await UserModel.findById(decoded.userId)
