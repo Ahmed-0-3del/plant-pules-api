@@ -1,0 +1,132 @@
+
+# 🌱 Plant Pulse API
+
+## 📌 Overview
+
+Plant Pulse is an AI-powered plant disease detection system specialized in
+detecting diseases in lettuce plants.
+
+The system allows users to upload images of lettuce leaves and receive an
+accurate prediction of whether the plant is healthy or affected by a disease.
+
+The project consists of:
+
+- Backend REST API built with Node.js and Express.js
+- Flutter mobile application
+- Frontend React
+- AI-based image classification model for lettuce disease detection
+
+The main goal of Plant Pulse is to help farmers and users detect lettuce
+diseases early and support better crop management.
+
+------------------------------------------------------------------------
+
+## ✨ Features
+
+### 👤 User Management
+- User registration and login
+- Secure authentication using JWT
+- Google Sign-In support
+- Update profile information
+- Upload profile image
+- Delete account
+
+### 🌿 Plant Disease Detection
+- Upload lettuce leaf images
+- AI-based disease prediction
+- Detect whether the lettuce is:
+  - Healthy
+  - botrytis_gray_mold
+  - downy_mildew
+  - pythium_root_rot
+  - tip_burn
+  - Not_Lettuce
+
+### 📊 Scan Management
+- Save user scan history
+- View previous scans
+- Track prediction results
+- Each user can access only their own scans
+ 
+### ☁️ Cloud Services
+- Store profile images and Scan images using Cloudinary
+- MongoDB Atlas database
+
+--------------------------------------------------------------------------
+
+## 🛠 Technologies
+
+### Backend
+- Node.js
+- Express.js
+- MongoDB Atlas
+- Mongoose
+- JWT Authentication
+- Passport.js
+- Google OAuth 2.0
+- Cloudinary
+- Multer
+- nodemon
+- nodemailer
+- axios
+- bcrypt
+- dotenv
+- joi
+
+----------------------------------------------------------------------------
+
+## ⚙️ Installation
+
+### 1. Clone Repository
+
+git clone <repository-url>
+
+
+### 2. Navigate to Project Folder
+
+cd Plant-Pulse-API
+
+
+### 3. Install Dependencies
+
+npm install
+
+
+-------------------------------------------------------------------------------
+
+## 🔐 Environment Variables
+
+Create a `.env` file in the root directory:
+
+PORT=5000
+
+MONGO_URI=your_mongodb_connection_string
+
+JWT_SECRET=your_secret_key
+
+
+# Google OAuth
+
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
+
+# Cloudinary
+
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+
+----------------------------------------------------------------------------------
+
+## ▶️ Running The Project
+
+
+### Production Mode
+
+npm start
+
+
+-------------------------------------------------------------------------------------
+
+

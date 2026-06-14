@@ -78,17 +78,6 @@ export const imageSchema = Joi.object({
 
 
 
-
-
-
-
-
-
-
-
-
-// import Joi from "joi";
-
 // // signup validation
 // export const signupSchema = Joi.object({
 //   name: Joi.string()
